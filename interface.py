@@ -1,4 +1,3 @@
-__author__ = 'will'
 import numpy as np
 from vreptest import vrep
 import time
