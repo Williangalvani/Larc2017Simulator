@@ -1,7 +1,7 @@
 __author__ = 'will'
 import numpy as np
 from vreptest import vrep
-
+import time
 
 class Gripper:
     """
@@ -75,19 +75,21 @@ class RobotInterface():
         vrep.simxSetJointTargetVelocity(self.clientID, self.left_wheel, speed,
                                         vrep.simx_opmode_oneshot)
 
-    def _read_camera(self):
-        data = vrep.simxGetVisionSensorImage(self.clientID, self.camera, 1, vrep.simx_opmode_buffer)
+    def _read_camera(self, handle):
+        data = vrep.simxGetVisionSensorImage(self.clientID, handle, 1, vrep.simx_opmode_buffer)
         if data[0] == vrep.simx_return_ok:
             return data
         return None
 
-    def get_image_from_camera(self):
+    def get_image_from_camera(self,handle):
         """
         Loads image from camera.
         :return:
         """
         img = None
-        while not img:  img = self._read_camera()
+        while not img:
+            img = self._read_camera(handle)
+            time.sleep(0.001)
         size = img[1][0]
         img = np.flipud(np.array(img[2], dtype='uint8').reshape((size, size)))
 

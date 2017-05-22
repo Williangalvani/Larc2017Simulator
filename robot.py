@@ -8,7 +8,7 @@ interface.set_right_speed(10.0)
 interface.gripper.move((0, 0, 0.02), False)
 
 while True:
-    img = interface.get_image_from_camera()
+    img = interface.get_image_from_camera(interface.camera)
     cv2.imshow("target", img)
     ch = cv2.waitKey(5) & 0xFF
     if ch == 27:
